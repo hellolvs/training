@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.fresh2017.mybatis.dao.LeaveHolidayDao">
+
+    <resultMap id="BaseResultMap" type="com.qunar.fresh2017.mybatis.model.LeaveHolidayModel">
+        <id column="id" property="id"/>
+        <result column="staff_id" property="staffId"/>
+        <result column="start_date" property="startDate"/>
+        <result column="end_date" property="endDate"/>
+        <result column="day_num" property="dayNum"/>
+        <result column="type" property="type"/>
+        <result column="area" property="area"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, staff_id, start_date, end_date, day_num, type, area
+	</sql>
+
+    <select id="selectLeaveHolidayByStaffId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        leave_holiday
+        WHERE
+        staff_id = #{staffId}
+    </select>
+
+    <insert id="insertLeaveHoliday" parameterType="LeaveHolidayModel">
+        INSERT INTO leave_holiday
+        (
+        staff_id,
+        start_date,
+        end_date,
+        day_num,
+        type,
+        area
+        )
+        VALUES
+        (
+        #{staffId},
+        #{startDate},
+        #{endDate},
+        #{dayNum},
+        #{type},
+        #{area}
+        )
+    </insert>
+
+    <delete id="deleteLeaveHolidayByStaffId" parameterType="Integer">
+        DELETE FROM
+        leave_holiday
+        WHERE
+        staff_id = #{staffId}
+    </delete>
+
+    <update id="updateLeaveHolidayById" parameterType="LeaveHolidayModel">
+        UPDATE
+        leave_holiday
+        SET
+        staff_id = #{staffId},
+        start_date = #{startDate},
+        end_date = #{endDate},
+        day_num = #{dayNum},
+        type = #{type},
+        area = #{area}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

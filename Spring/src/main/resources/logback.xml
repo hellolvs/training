@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>[ %d{yyyy-MM-dd HH:mm:ss} %-5level %-50.50(%c{45}:%L)]  %m%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${CATALINA_HOME}/logs/spring.log</file>
+        <encoder charset="UTF-8">
+            <pattern>[ %d{yyyy-MM-dd HH:mm:ss} %-5level %-50.50(%c{45}:%L)]  %m%n</pattern>
+        </encoder>
+        <append>true</append>
+    </appender>
+
+    <appender name="rolling_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${CATALINA_HOME}/logs/spring-%d{yyyy-MM-dd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder charset="UTF-8">
+            <pattern>[ %d{yyyy-MM-dd HH:mm:ss} %-5level %-50.50(%c{45}:%L)]  %m%n</pattern>
+        </encoder>
+        <append>true</append>
+    </appender>
+
+    <appender name="async_file" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10</queueSize>
+        <appender-ref ref="file"/>
+    </appender>
+
+    <logger name="com.qunar.fresh2017.spring" level="trace">
+        <appender-ref ref="rolling_file"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+
+</configuration>

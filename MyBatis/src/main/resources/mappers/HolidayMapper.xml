@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.fresh2017.mybatis.dao.HolidayDao">
+
+    <resultMap id="BaseResultMap" type="com.qunar.fresh2017.mybatis.model.HolidayModel">
+        <id column="id" property="id"/>
+        <result column="staff_id" property="staffId"/>
+        <result column="sick_num" property="sickNum"/>
+        <result column="annual_num" property="annualNum"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, staff_id, sick_num, annual_num
+	</sql>
+
+    <select id="selectHolidayByStaffId" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        holiday
+        WHERE
+        staff_id = #{staffId}
+    </select>
+
+    <select id="selectHolidayMoreThanAnnualNum" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        holiday
+        WHERE
+        <![CDATA[
+        annual_num > #{annualNumname}
+        ]]>
+    </select>
+
+    <insert id="insertHoliday" parameterType="HolidayModel">
+        INSERT INTO holiday
+        (
+        staff_id,
+        sick_num,
+        annual_num
+        )
+        VALUES
+        (
+        #{staffId},
+        #{sickNum},
+        #{annualNum}
+        )
+    </insert>
+
+    <delete id="deleteHolidayByStaffId" parameterType="Integer">
+        DELETE FROM
+        holiday
+        WHERE
+        staff_id = #{staffId}
+    </delete>
+
+    <update id="updateHolidayByStaffId" parameterType="HolidayModel">
+        UPDATE
+        holiday
+        SET
+        sick_num = #{sickNum},
+        annual_num = #{annualNum}
+        WHERE
+        staff_id = #{staffId}
+    </update>
+
+</mapper>

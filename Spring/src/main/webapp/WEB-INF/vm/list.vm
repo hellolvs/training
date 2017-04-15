@@ -1,0 +1,49 @@
+<h2>welcome to user manage system</h2>
+<p>
+    <a href="/user/add">增加用户</a>
+</p>
+<p>
+<table cellspacing="10">
+    <tr>
+        <th>编号</th>
+        <th>姓名</th>
+        <th>性别</th>
+        <th>年龄</th>
+        <th>备注</th>
+        <th>是否可用</th>
+    </tr>
+    #foreach($user in $userList)
+        <tr>
+            <td><a href="/user/${user.id}">${user.id}</a></td>
+            <td><a href="/user/${user.id}">${user.name}</a></td>
+            <td>
+                #if(${user.gender})
+                    男
+                #else
+                    女
+                #end
+            </td>
+            <td>${user.age}</td>
+            <td>${user.comment}</td>
+            <td>
+                #if(${user.validity})
+                    是
+                #else
+                    否
+                #end
+            </td>
+            <td>
+                <a href="/user/update/${user.id}">修改</a>
+            </td>
+            <td>
+                <a href="/user/delete/${user.id}">删除</a>
+            </td>
+        </tr>
+    #end
+</table>
+</p>
+#set($prePage=${pageNo} - 1)
+#set($nextPage=${pageNo} + 1)
+<p>
+    <a href="/user/list/${prePage}">上一页</a> <a href="/user/list/${nextPage}">下一页</a>
+</p>

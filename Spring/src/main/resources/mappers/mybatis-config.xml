@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <!-- changes from the defaults for testing -->
+        <setting name="cacheEnabled" value="true"/>
+        <setting name="useGeneratedKeys" value="true"/>
+        <setting name="defaultExecutorType" value="REUSE"/>
+    </settings>
+
+    <typeAliases>
+        <!--给实体类起一个别名 -->
+        <typeAlias type="com.qunar.fresh2017.spring.model.User"
+                   alias="User"/>
+    </typeAliases>
+    
+    <plugins>
+        <plugin interceptor="com.qunar.base.meerkat.orm.mybatis.support.ResultSetHandlerInterceptor"/>
+        <plugin interceptor="com.qunar.base.meerkat.orm.mybatis.support.StatementHandlerInterceptor"/>
+    </plugins>
+
+    <mappers>
+        <!--XXXMapper.xml装载进来 同等于把“dao”的实现装载进来 -->
+        <mapper resource="mappers/UserMapper.xml"/>
+    </mappers>
+</configuration>  

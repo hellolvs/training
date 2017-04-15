@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qunar.fresh2017.spring.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.qunar.fresh2017.spring.model.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" jdbcType="BOOLEAN"/>
+        <result column="age" property="age" jdbcType="TINYINT"/>
+        <result column="comment" property="comment" jdbcType="VARCHAR"/>
+        <result column="validity" property="validity" jdbcType="BOOLEAN"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="last_modified_time" property="lastModifiedTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, name, gender, age, comment, validity, create_time, last_modified_time
+	</sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from
+        user
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+    </select>
+
+    <insert id="insert" parameterType="com.qunar.fresh2017.spring.model.User">
+		insert into user (name,gender,age,comment,validity,create_time,last_modified_time)
+		values
+		(#{name,jdbcType=VARCHAR},
+		#{gender,jdbcType=BOOLEAN},
+		#{age,jdbcType=TINYINT},
+		#{comment,jdbcType=VARCHAR},
+		#{validity,jdbcType=BOOLEAN},
+		#{createTime,jdbcType=TIMESTAMP},
+		#{lastModifiedTime,jdbcType=TIMESTAMP})
+	</insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.qunar.fresh2017.spring.model.User">
+		update user
+		set
+		name = #{name,jdbcType=VARCHAR},
+		gender = #{gender,jdbcType=BOOLEAN},
+		age = #{age,jdbcType=TINYINT},
+		comment = #{comment,jdbcType=VARCHAR},
+		validity = #{validity,jdbcType=BOOLEAN},
+		last_modified_time = #{lastModifiedTime,jdbcType=TIMESTAMP}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

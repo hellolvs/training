@@ -1,0 +1,24 @@
+<div class="container">
+    <section id="content">
+        #if(${isLogin} && (${username} == ${ownername}))
+            <form method="post">
+                <h2>删除对比记录</h2>
+
+                <div>
+                    确定要删除编号为：   ${id}   的对比记录吗？
+                </div>
+                <div>
+                    <label><input type="radio" name="isDelete" value="true"/>是</label>
+                    <label><input type="radio" name="isDelete" value="false" checked="true"/>否</label>
+                </div>
+                <div>
+                    <input type="submit" value="确定"/>
+                </div>
+            </form>
+        #else
+            <div>
+                您无删除权限，请先登录或检查此记录所属用户  <a href="/user/login">点击登录</a>
+            </div>
+        #end
+    </section>
+</div>

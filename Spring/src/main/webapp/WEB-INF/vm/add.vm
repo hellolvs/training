@@ -1,0 +1,30 @@
+<div class="container">
+    <section id="content">
+        <form method="post">
+            <h2>添加用户</h2>
+
+            <div>
+                姓名:<input type="text" name="name"/>
+            </div>
+            <div>
+                性别:<label><input type="radio" name="gender" value="true"/>男</label>
+                <label><input type="radio" name="gender" value="false"/>女</label>
+            </div>
+            <div>
+                年龄：<input type="number" min="0" max="125" value="0" name="age"/>
+            </div>
+            <div>
+                备注：<input type="text" name="comment"/>
+            </div>
+            <div>
+                是否可用：<label><input type="radio" name="validity" value="true"/>是</label>
+                <label><input type="radio" name="validity" value="false"/>否</label>
+            </div>
+            <div>
+                <input type="submit" value="确认添加"/>
+            </div>
+        </form>
+        <!-- form -->
+    </section>
+    <!-- content -->
+</div>

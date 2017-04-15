@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.qunar.fresh2017.exam3.dao.DiffDao">
+
+    <resultMap id="BaseResultMap" type="com.qunar.fresh2017.exam3.model.DiffModel">
+        <id column="id" property="id"/>
+        <result column="owner_name" property="ownerName"/>
+        <result column="diff_time" property="diffTime"/>
+        <result column="source_file_content" property="sourceFileContent"/>
+        <result column="target_file_content" property="targetFileContent"/>
+        <result column="diff_content" property="diffContent"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+		id, owner_name, diff_time, source_file_content, target_file_content, diff_content
+	</sql>
+
+    <select id="selectDiffById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        diff
+        WHERE
+        id = #{id}
+    </select>
+
+    <select id="selectDiffByOwnerName" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        diff
+        WHERE
+        owner_name = #{ownerName}
+    </select>
+
+    <select id="findAllForPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        diff
+        ORDER BY id DESC
+    </select>
+
+    <select id="countDiff" resultType="Integer">
+        SELECT COUNT(*)
+        FROM
+        diff
+    </select>
+
+    <select id="getMaxId" resultType="Integer">
+        SELECT LAST_INSERT_ID()
+    </select>
+
+    <insert id="insertDiff" parameterType="DiffModel">
+        INSERT INTO diff
+        (
+        owner_name,
+        diff_time,
+        source_file_content,
+        target_file_content,
+        diff_content
+        )
+        VALUES
+        (
+        #{ownerName},
+        #{diffTime},
+        #{sourceFileContent},
+        #{targetFileContent},
+        #{diffContent}
+        )
+    </insert>
+
+    <delete id="deleteDiffById" parameterType="Integer">
+        DELETE FROM
+        diff
+        WHERE
+        id = #{id}
+    </delete>
+
+    <update id="updateDiffById" parameterType="DiffModel">
+        UPDATE
+        diff
+        SET
+        owner_name = #{ownerName},
+        diff_time = #{diffTime},
+        source_file_content = #{sourceFileContent},
+        target_file_content = #{targetFileContent},
+        diff_content = #{diffContent}
+        WHERE
+        id = #{id}
+    </update>
+
+</mapper>

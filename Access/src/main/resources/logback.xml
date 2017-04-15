@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name = "console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder charset="UTF-8">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %5p %c:%L] %m%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>Access.log</file>
+        <encoder charset="UTF-8">
+            <pattern>[%d{yyyy-MM-dd HH:mm:ss} %5p %c:%L] %m%n</pattern>
+        </encoder>
+    </appender>
+    <!--异步输出-->
+    <appender name="async_file" class="ch.qos.logback.classic.AsyncAppender">
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>10</queueSize>
+        <appender-ref ref="file"/>
+    </appender>
+    <logger name="com.qunar.fresh2017.access.Access" level="trace">
+        <appender-ref ref="async_file"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="console"/>
+    </root>
+</configuration>

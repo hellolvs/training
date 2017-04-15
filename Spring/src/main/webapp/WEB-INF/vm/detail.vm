@@ -1,0 +1,39 @@
+<h2>用户详情</h2>
+
+<table>
+    <tr>
+        <td>编号： ${user.id}</td>
+    </tr>
+    <tr>
+        <td>姓名： ${user.name}</td>
+    </tr>
+    <tr>
+        <td>性别：
+            #if(${user.gender})
+                男
+            #else
+                女
+            #end
+        </td>
+    </tr>
+    <tr>
+        <td>年龄： ${user.age}</td>
+    </tr>
+        <td>备注： ${user.comment}</td>
+    </tr>
+    <tr>
+        <td>是否可用：
+            #if(${user.validity})
+                是
+            #else
+                否
+            #end
+        </td>
+    </tr>
+    <tr>
+        <td>创建时间： ${user.createTime}</td>
+    </tr>
+    <tr>
+        <td>最后修改时间： ${user.lastModifiedTime}</td>
+    </tr>
+</table>

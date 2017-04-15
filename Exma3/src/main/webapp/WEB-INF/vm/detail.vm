@@ -1,0 +1,21 @@
+<h2>对比结果详情</h2>
+
+<table>
+    <tr>
+        <td>所有者姓名： ${diff.ownerName}</td>
+    </tr>
+    <tr>
+        <td>对比时间:  ${diff.diffTime}</td>
+    </tr>
+    <tr>
+        <td>源文件内容： <pre>${diff.sourceFileContent}</pre></td>
+    </tr>
+        <td>目标文件内容： <pre>${diff.targetFileContent}</pre></td>
+    </tr>
+    <tr>
+        <td>差异内容： <pre>${diff.diffContent}</pre></td>
+    </tr>
+</table>
+<p>
+    <a href="/diff/list/1">返回对比列表页面</a>
+</p>

@@ -1,0 +1,111 @@
+﻿图书表
+id book_id author_id book_name pages price press
+奖项表
+id book_id author_id cup_type cup_time
+作者表
+id author_id author_name content
+一、设计表，写出建表语句(我给出的字段内容、名称仅供参考，各位同学可以按照自己的设计建表)
+考察点：对字段定义的掌握，对字段类型的选择掌握
+
+CREATE TABLE book(
+id int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+book_id int NOT NULL DEFAULT '0' COMMENT '图书ID',
+author_id int NOT NULL DEFAULT '0' COMMENT '作者ID',
+book_name varchar(32) NOT NULL DEFAULT '' COMMENT '图书名称',
+pages smallint NOT NULL DEFAULT '0' COMMENT '页数',
+price decimal(12,2) NOT NULL DEFAULT '0.00' COMMENT '价格',
+press varchar(32) NOT NULL DEFAULT '0' COMMENT '出版社',
+PRIMARY KEY (id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT '图书表';
+
+CREATE TABLE cup(
+id int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+book_id int NOT NULL DEFAULT '0' COMMENT '图书ID',
+author_id int NOT NULL DEFAULT '0' COMMENT '作者ID',
+cup_type tinyint NOT NULL DEFAULT '1' COMMENT '奖项类型,1金，2银，3铜',
+cup_time datetime NOT NULL DEFAULT '1970-01-01 00:00:01' COMMENT '获奖时间',
+PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='奖项表';
+
+CREATE TABLE author(
+id int unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+author_id int NOT NULL DEFAULT '0' COMMENT '作者ID',
+author_name varchar(20) NOT NULL DEFAULT '' COMMENT '作者姓名',
+content varchar(191) NOT NULL DEFAULT '' COMMENT '作者简介',
+PRIMARY KEY(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='作者表';
+
+二、设计索引,写出创建索引的语句
+考察点：对索引字段选择的掌握，对DDL合并技巧的掌握
+
+ALTER TABLE book ADD UNIQUE INDEX uniq_book_id(book_id),ADD UNIQUE INDEX uniq_author_id(author_id),ADD INDEX idx_book_name(book_name);
+ALTER TABLE cup ADD UNIQUE INDEX uniq_book_id(book_id),ADD UNIQUE INDEX uniq_author_id(author_id);
+ALTER TABLE author ADD UNIQUE INDEX uniq_author_id(author_id),ADD INDEX idx_author_name(author_name);
+
+三、完成以下SQL
+考察点：对连接查询的掌握，对函数索引的概念理解
+对简化语句、分拆语句的理解
+1. 查询姓王的作者有多少
+SELECT COUNT(*) FROM author WHERE author_name LIKE '王%';
+
+2. 查询获奖作者总人数
+SELECT COUNT(DISTINCT author_id) FROM cup;
+
+3. 查询同时获得过金奖、银奖的作者姓名
+SELECT author_name FROM cup cup1 ,cup cup2 ,author WHERE cup1.author_id=cup2.author_id
+and cup.cup_type=1 and cup2.cup_type=2 and author.author_id=cup1.author_id;
+
+
+4. 查询获得过金奖的图书有多少本，银奖的有多少本
+SELECT COUNT(DISTINCT book_id) FROM cup WHERE cup_type=1;
+SELECT COUNT(DISTINCT book_id) FROM cup WHERE cup_type=2;
+
+5. 查询最近一年内获过奖的作者姓名
+SELECT author_name FROM author JOIN cup ON author.author_id=cup.author_id
+WHERE cup_time BETWEEN CURRENT_DATE -INTERVAL 1 YEAR AND CURRENT_DATE;
+
+四、
+1. 如何查看表的结构信息？如何查看索引选择性？
+答：
+查看表结构：
+   (1)desc TABLENAME[\G];
+   (2)describe TABLENAME[\G]; 
+   (3)explain TABLENAME[\G]; 
+   (4)show create table TABLENAME[\G];
+   方法1,2,3的显示信息一样为表结构信息,方法4显示建表信息，以上方法后面若加\G，则按列显示信息。
+查看索引信息：
+show index from TABLENAME;
+explain select语句;explain命令显示了mysql如何使用索引来处理select语句,可以帮助选择更好的索引和写出更优化的查询语句。
+
+2. 联合索引中的字段顺序应该如何设计？
+答：
+联合索引设计时应该把选择性最高的字段放在前边，选择性最低的放在后边。
+
+3. 以下查询应如何创建索引？
+select * from tb1 where name='zww' order by create_time desc limit 10;
+select * from tb1 where create_time between '2016-08-01 0:00:00' and '2016-08-31 23:59:59';
+答：
+idx_name_create_time(name,create_time);
+
+
+4. int(10)和varchar(10)两个字段的(10)有什么区别？
+答：
+int(10)中的10表示表示显示宽度为10位，不是实际占用空间大小，int占4个字节；varchar(10)中的10表示字段可容纳最大字符数为10。
+
+5. 在utf8字符集和utf8mb4字符集下，varchar(50)分别能存储多少字符？
+创建索引时，字符串长度分别为多少，才能成功创建完整索引（而不是前缀索引）
+答：
+utf8字符集和utf8mb4下varchar(50)都是最多存储50个字符，只不过占的字节数不同，utf8一个字符最多占3个字节，utf8mb4一个字符最多占4个字节。
+创建索引时，当varchar的长度达到767字节就不能创建完整索引，只能创建前缀索引了，所以utf8字符集下，字符串长度应该不超过255个字符，utf8mb4字符集下应该不超过191个字符
+
+6. 以下查询如何创建索引能够实现覆盖索引优化？(请给出具体SQL)
+select invalid_time_flag from pushtoken_android_62
+where uid = 'AC54E24E-FB73-3981-C4BC-CED8D69407F8'
+      and pid = '10010'
+
+select count(*) from pushtoken_android_62
+where uid = 'AC54E24E-FB73-3981-C4BC-CED8D69407F8'
+      and pid = '10010'
+考察点：对索引设计的理解，对字段长度含义的理解，对字符集影响的理解，对覆盖索引概念的理解
+答：
+ALTER TABLE pushtoken_android_62 ADD INDEX idx_uid_pid_invalid_time_flag(uid,pid,invalid_time_flag);

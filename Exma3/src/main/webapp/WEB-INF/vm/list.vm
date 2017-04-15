@@ -1,0 +1,44 @@
+<p>
+#if(${isLogin})
+    Welcome ${username}  <a href="/user/logout">退出</a>
+#else
+    <a href="/user/login">登录</a>
+#end
+</p>
+
+<form action="/diff/submit" method="post" enctype="multipart/form-data">
+    <input type="file" name="source" size="1024">
+    <input type="file" name="target" size="1024">
+    <input type="submit" value="对比">
+</form>
+
+<h3>最近5条历史对比结果</h3>
+
+<table cellspacing="10">
+    <tr>
+        <th>编号</th>
+        <th>对比时间</th>
+        <th>源文件内容</th>
+        <th>目标文件内容</th>
+        <th>差异</th>
+        <th>操作</th>
+    </tr>
+    #foreach($diff in $diffList)
+        <tr>
+            <td>${diff.id}</td>
+            <td>${diff.diffTime}</td>
+            <td><pre>${diff.sourceFileContent}</pre></td>
+            <td><pre>${diff.targetFileContent}</pre></td>
+            <td><pre>${diff.diffContent}</pre></td>
+            #if(${diff.ownerName} == ${username})
+                <td><a href="/diff/delete/${diff.id}">删除</a></td>
+            #end
+        </tr>
+    #end
+</table>
+
+#set($prePageNo = ${pageNo} - 1)
+#set($nextPageNo = ${pageNo} + 1)
+<p>
+    共${totalRecord}条，${maxPageNo}页    #if($pageNo > 1)<a href="/diff/list/${prePageNo}">上一页</a>#end    #if($pageNo < $maxPageNo)<a href="/diff/list/${nextPageNo}">下一页</a>#end
+</p>
